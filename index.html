@@ -4,91 +4,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Календарь событий</title>
-    <link href='https://unpkg.com/fullcalendar@5.10.1/main.css' rel='stylesheet' />
-    <script src='https://unpkg.com/fullcalendar@5.10.1/main.js'></script>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        .header {
-            background-image: url('https://via.placeholder.com/1200x400');
-            background-size: cover;
-            color: white;
-            text-align: center;
-            padding: 100px 0;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 3em;
-        }
-        .calendar-container {
-            flex: 1;
-            padding: 20px;
-        }
-        #calendar {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .footer {
-            background: #333;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-        }
-        /* Modal styles */
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1; 
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto; 
-            background-color: rgb(0,0,0); 
-            background-color: rgba(0,0,0,0.4); 
-            padding-top: 60px; 
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto; 
-            padding: 20px;
-            border: 1px солидный #888;
-            width: 80%;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
+    <link href="https://unpkg.com/fullcalendar@5.10.1/main.css" rel="stylesheet" />
+    <link href="styles.css" rel="stylesheet"> <!-- Подключаем файл со стилями -->
+    <script src="https://unpkg.com/fullcalendar@5.10.1/main.js"></script>
+    <script src="events.js"></script> <!-- Подключаем файл с событиями -->
 </head>
 <body>
     <div class="header">
-        <h1>Название Организации</h1>
+        <h1>"Каникулы 2024"</h1>
     </div>
     <div class="calendar-container">
         <div id='calendar'></div>
     </div>
+    <div id="may-events" class="month-events">
+        <h3>Мероприятия на Май (даты неизвестны)</h3>
+        <ul>
+            <li>Турнир по шахматам «Награда шахматиста»</li>
+
+        </ul>
+    </div>
+    <div id="june-events" class="month-events">
+        <h3>Мероприятия на Июнь (даты неизвестны)</h3>
+        <ul>
+            <li>Турнир по шахматам «Награда шахматиста»</li>
+            <li>Арт-пространство «Территория кино» (в рамках проекта бесплатный показ фильма для всей семьи, Июнь (по отдельному графику), Фойе 1-й этаж Киноконцертный зал)</li>
+            <li>Региональное соревнование по боксу класса «Б» «РИНГ МУЖЕСТВА» памяти А. Патрушева, погибшего на Северном Кавказе в ходе боевых действий среди юниоров и юниорок (17-18 лет), юниоров и юниорок (19-22 лет), юноши и девушки (15-16 лет) (Июнь 2024, МАУ «ФОЦ «Сокол», МАУ ДО «СШ «Лидер») </li>
+            <li>Открытый турнир по футболу среди юношей 2013-2014 г.р., 2011-2012г.р., посвященный Дню победы в Великой Отечественной войне (Июнь 2024, МАУ ДО СШ ГО Красноуфимск)</li>
+            <li>Первенство по летнему многоборью ВФСК ГТО среди воспитанников ВПК. (Июнь 2024, МАУ «ФОЦ «Сокол», Центр тестирования)</li>
+            <li>Развлекательная игровая программа «Мир на планете – счастливы дети!», посвященный Дню защиты детей (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>Акция «Права и обязанности», приуроченная ко Дню защиты детей, профилактика преступлений и правонарушений, знакомство с нормативно-правовой системой (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>Программа ко дню защиты детей «Цветы жизни» (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>Спортивная игра ко дню пожарной охраны «Юные пожарные» 7+ (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>Туристическая полоса препятствий «Спортивный герой». (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>Фотоконкурс «Лето в кадре» (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>Стихотворный вечер ко дню рождения А.С. Пушкина «Я памятник себе воздвиг нерукотворный» (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>«Россия - Родина моя!» (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>Информ-досье «Не зная броду, не суйся в воду!», с привлечением Сычева Дмитрия Сергеевича, спасателя II класса ГКУ «Службы спасения Свердловской области». Профилактика несчастных случаев на береговой зоне и в воде. (14+) (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>Квилт - дискуссия  «Азбука добрых качеств» Просмотр видеороликов о нравственном воспитании, с последующим обсуждением.(12+) (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>«С водой не шути!» Профилактическое мероприятие перед открытием купального сезона с привлечением Сычева Дмитрия Сергеевича, спасателя II класса ГКУ «Службы спасения Свердловской области». (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>Мастер-класс ко Дню России «Наша крепкая страна!» 12+ (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>Творческая мастерская ко Дню России «Моя прекрасная Родина» (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>Мастер класс «Страна моя - Россия» Создание нагрудного знака триколор, ко дню России.(14+) (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>Муниципальный конкурс городского округа Красноуфимск-марафон для волонтеров Общероссийского общественно-государственного движения детей и молодежи «Движение первых» (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>Поездка команды лучших волонтеров городского округа Красноуфимск Общероссийского общественно-государственного движения детей и молодежи «Движение первых» (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>Фестиваль Красок «Холи-Фест-2024» - в рамках декады Дня защиты детей (Первая декада июня 2024, ЦТДиМ)</li>
+            <li>«Вместе мы – большая сила, вместе мы – страна Россия». Акция по микрорайону «Селекционная станция», приученному ко Дню России. (14+) (Вторая декада июня 2024, ЦТДиМ)</li>
+            <li>Творческое мероприятие. Декоративная картина 7+ (Вторая декада июня 2024, ЦТДиМ)</li>
+            <li>Велопробег «ВелоПуть» (14+) (Вторая декада июня 2024, ЦТДиМ)</li>
+            <li>Спринт-турнир «Крученый мяч». По настольному теннису среди воспитанников КМЖ. (14+) (Вторая декада июня 2024, ЦТДиМ)</li>
+            <li>Акция «Дети России – 2024» приученная ко Дню России. (14+) (Вторая декада июня 2024, ЦТДиМ)</li>
+            <li>Конкурс рисунков на асфальте «Краски лета» 6+ (Вторая декада июня 2024, ЦТДиМ)</li>
+            <li>Беседа «Стоп наркотикам!» по профилактики наркомании 14+ (Вторая декада июня 2024, ЦТДиМ)</li>
+
+            <li>Беседа-дискуссия «Изучение условных знаков, топографические и спортивные карты». (Третья  декада июня 2024, ЦТДиМ)</li>
+            <li>Квест ко Дню Поиска кладов и секретов «Тайна Перекрестка» (Третья  декада июня 2024, ЦТДиМ)</li>
+            <li>Муниципальный флешмоб «Мы против наркотиков!», приуроченный к Международному дню борьбы с наркоманией. (Третья  декада июня 2024, ЦТДиМ)</li>
+            <li>Праздничный концерт «МЕГА-fresh», посвященный дню молодежи Красноуфимска (Третья  декада июня 2024, ЦТДиМ)</li>
+
+            <li>Акция «Мы будущее России», торжественное вручение паспорта гражданина Российской Федерации, посвященное Дню России. (По согласованию июнь 2024, ЦТДиМ)</li>
+            <li>«Молодежный квартал»-«КСК-News!», комплекс мероприятий в рамках организации празднования Дня города, приуроченных к 289-летию Красноуфимска (По согласованию июнь 2024, ЦТДиМ)</li>
+            <li>XV юбилейный молодежный фестиваль «КАМЕННЫЙ ПОЯС – 2024 – Красноуфимск – город искусства, туризма и спорта» (По согласованию июнь 2024, ЦТДиМ)</li>
+            <li>Военно-спортивная патриотическая игра «Марафон героев» (По согласованию июнь 2024, ЦТДиМ)</li>
+            <li>Комплекс мероприятий в День памяти и скорби с участием структурных подразделений МАУ «ЦТДиМ» (По согласованию июнь 2024, ЦТДиМ)</li>
+            <li>Муниципальная акция «Объединимся против ВИЧ!» для жителей городского округа Красноуфимск (По согласованию июнь 2024, ЦТДиМ)</li>
+
+            <li>Конкурс рисунков «Край родной, навек любимый», мероприятие, приуроченное к 90-летию Свердловской области (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Экскурсия для воспитанников Центра на шоколадную фабрику г. Пермь.  (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Экскурсия для детей-инвалидов в Кунгурскую Ледяную пещеру. (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Социальная акция для населения г. Красноуфимска «Знать - значит жить!» - размещение информационных материалов по профилактике ВИЧ-инфекции в транспорте, остановках общественного транспорта, в торгово-развлекательных центрах и местах массового пребывания людей (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Пушкинквест «В тридевятом царстве, в тридесятом государстве» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Посиделки книголюбов «Мой книжный герой» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Час безопасности «Каникулы в радость!» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Патриотический праздник «Россия – любимая наша страна!» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Фестиваль чтения «Город читающих детей» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Конкурсно-игровая программа «Парк юрского периода» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Литературно-игровой час «Волшебная страна Лукоморье» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Развлекательная программа «День индейцев» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Развлекательная программа «Джунгли зовут» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Игровая программа «День сказочного героя» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Квизбук «Скоро сказка сказывается» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Акция «Читаем Пушкина вместе» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>День веселых затей «Детство - чудесная страна» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Краеведческая тропа «Вот она какая, сторона родная» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Библио-сафари «Приходите в Африку гулять» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Конкурсная программа «Клёвая рыбалка» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Литературная игра «Путешествие в мир книг» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+
+            <li>Игровая программа «Без билета вокруг света» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Акция «Безопасное лето» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Праздник «Маленькие дети на большой планете» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Квест «Загадки А. С. Пушкина» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Игровая  программа «Радуга друзей» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Познавательная игра «Светофор бежит на помощь» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Познавательная игра «Горжусь тобой, моя Россия» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Литературный праздник «В городе трех толстяков» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Литературный экспресс «День рождения Мэри Поппинс» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Игровое мероприятие «Радужные странствия» (к Международному дню защиты детей) (Июнь 2024, ГАУ «ЦСПСиД )</li>
+            <li>Квест «Россия: вчера, сегодня, завтра» (Июнь 2024, ГАУ «ЦСПСиД )</li>
+
+            <li>Концертно - игровая программа «Дружба – это наша сила! Секреты дружбы от кота Леопольда.» (Июнь по согласованию МАУДО "Дворец творчества")</li>
+            <li>Познавательно-игровая программа «Семья - как много в этом слове…» (Июнь по согласованию МАУДО "Дворец творчества")</li>
+            <li>ШОУ беспилотных, радиоуправляемых моделей «Скорость и мощность»(Июнь по согласованию МАУДО "Дворец творчества")</li>
+            <li>Мастер-классы: «Ярмарка мастеров» «Пейзажи Урала» рисование углем «Фэнтези-арт: создание магических и сказочных сюжетов с использованием фантастических элементов» «Театральный калейдоскоп» (изготовление театральных кукол) «История в твоей голове» (создание комикса, знакомство с раскадровкой в мультипликации) «Приручить дракона» конструирование из подручных материалов "Плетение тактических браслетов для участников специальной военной операции" (из материалов заказчиков) (Июнь по согласованию МАУДО "Дворец творчества")</li>
+
+
+
+        </ul>
+    </div>
+    <div id="july-events" class="month-events">
+        <h3>Мероприятия на Июль (даты неизвестны)</h3>
+        <ul>
+           <!-- <li>Мероприятие 5</li>
+            <li>Мероприятие 6</li>
+            <li>Мероприятие 7</li>
+            <li>Мероприятие 8</li>-->
+        </ul>
+        </ul>
+    </div>
+    <div id="august-events" class="month-events">
+        <h3>Мероприятия на Август (даты неизвестны)</h3>
+        <ul>
+            <!-- <li>Мероприятие 9</li>
+            <li>Мероприятие 10</li>
+            <li>Мероприятие 11</li>
+            <li>Мероприятие 12</li>-->
+        </ul>
+    </div>
     <div class="footer">
-        <p>&copy; 2024 Название Организации</п>
-        <п>Email: contact@organization.com</п>
-        <п>Контакт: +1 234 567 890</п>
+        <p>Начальник отдела по социальной политике, молодежным программам и туризму <p>Волкова Виктория Александровна</p></p>
+        <p>Телефон: (34394) 5-07-20 добавочный (207)</p>
     </div>
 
-    <!-- The Modal -->
     <div id="eventModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -98,61 +144,116 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                locale: 'ru', // Установка русской локали
-                validRange: {
-                    start: '2024-05-01',
-                    end: '2024-09-01'
-                },
-                events: [
-                    { title: 'Турнир по мини-футболу среди обучающихся 2016-2017г.р., посвященный Дню защиты детей', start: '2024-06-01' },
-                    { title: 'Театрализованная концертная программа «Просто ДЕТИ»', start: '2024-06-01' },
-                    { title: 'Празднично-игровая программа «Территория детства», посвященная Дню Защиты детей', start: '2024-06-01' },
-                    { title: 'Муниципальный слет ДЮП, база отдыха «Экспресс»', start: '2024-06-05' },
-                    { title: 'Событие 3', start: '2024-06-07' },
-                    { title: 'Особое событие', start: '2024-07-05' }
-                ],
-                dateClick: function(info) {
-                    showEventsForDate(info.dateStr);
-                },
-                eventClick: function(info) {
-                    showEventsForDate(info.event.startStr);
-                }
-            });
-            calendar.render();
-
-            function showEventsForDate(dateStr) {
-                var modal = document.getElementById("eventModal");
-                var modalTitle = document.getElementById("modalTitle");
-                var modalDate = document.getElementById("modalDate");
-                var modalEvents = document.getElementById("modalEvents");
-
-                modalTitle.innerText = 'Мероприятия на ' + dateStr;
-                modalDate.innerText = dateStr;
-
-                var eventsOnDate = calendar.getEvents().filter(event => event.startStr === dateStr);
-                modalEvents.innerHTML = eventsOnDate.map(event => `<p>${event.title}</p>`).join('');
-
-                modal.style.display = "block";
-            }
-
-            var modal = document.getElementById("eventModal");
-            var span = document.getElementsByClassName("close")[0];
-
-            span.onclick = function() {
-                modal.style.display = "none";
-            }
-
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'ru',
+            validRange: {
+                start: '2024-05-01',
+                end: '2024-09-01'
+            },
+            headerToolbar: {
+                left: 'prev,next',
+                center: 'title',
+                right: ''
+            },
+            showNonCurrentDates: false,
+            events: events, // Используем события из подключенного файла
+            datesSet: function(info) {
+                showMonthEvents(info.view.currentStart);
+            },
+            dateClick: function(info) {
+                showEventsForDate(info.dateStr);
+            },
+            eventClick: function(info) {
+                var clickedDate = info.jsEvent.target.closest('.fc-daygrid-day').getAttribute('data-date');
+                showEventsForDate(clickedDate);
+                info.jsEvent.preventDefault(); // Prevent default action
             }
         });
+        calendar.render();
+
+        function showMonthEvents(date) {
+            var month = date.getMonth();
+            var mayEvents = document.getElementById('may-events');
+            var juneEvents = document.getElementById('june-events');
+            var julyEvents = document.getElementById('july-events');
+            var augustEvents = document.getElementById('august-events');
+
+            mayEvents.classList.remove('active');
+            juneEvents.classList.remove('active');
+            julyEvents.classList.remove('active');
+            augustEvents.classList.remove('active');
+
+            if (month == 4) {
+                mayEvents.classList.add('active');
+            } else if (month == 5) {
+                juneEvents.classList.add('active');
+            } else if (month == 6) {
+                julyEvents.classList.add('active');
+            } else if (month == 7) {
+                augustEvents.classList.add('active');
+            }
+        }
+
+        function showEventsForDate(dateStr) {
+            var modal = document.getElementById("eventModal");
+            var modalTitle = document.getElementById("modalTitle");
+            var modalDate = document.getElementById("modalDate");
+            var modalEvents = document.getElementById("modalEvents");
+
+            modalTitle.innerText = 'Мероприятия на ' + dateStr;
+            //modalDate.innerText = dateStr;
+
+            var eventsOnDate = getEventsForDate(dateStr);
+
+            var eventTitles = eventsOnDate.map(event => `<p>${event.title}</p>`);
+
+            if (eventTitles.length === 0) {
+                eventTitles = ['Нет мероприятий на этот день'];
+            }
+
+            modalEvents.innerHTML = eventTitles.join('');
+
+            modal.style.display = "block";
+        }
+
+        function getEventsForDate(dateStr) {
+            var events = calendar.getEvents();
+            var date = new Date(dateStr);
+
+            var eventsOnDate = [];
+
+            events.forEach(event => {
+                var start = new Date(event.startStr);
+                var end = event.endStr ? new Date(event.endStr) : new Date(event.startStr);
+
+                // Check if the selected date is within the event's date range
+                if (date >= start && date <= end) {
+                    eventsOnDate.push(event);
+                }
+            });
+
+            return eventsOnDate;
+        }
+
+        var modal = document.getElementById("eventModal");
+        var span = document.getElementsByClassName("close")[0];
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    });
+</script>
+
     </script>
 </body>
 </html>
