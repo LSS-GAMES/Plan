@@ -1,303 +1,226 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Календарь событий</title>
-    <link href="https://unpkg.com/fullcalendar@5.10.1/main.css" rel="stylesheet" />
-    <link href="styles.css" rel="stylesheet"> <!-- Подключаем файл со стилями -->
-    <script src="https://unpkg.com/fullcalendar@5.10.1/main.js"></script>
-    <script src="events.js"></script> <!-- Подключаем файл с событиями -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Админка — заявки</title>
+  <style>
+    :root{--bg:#0b1020;--card:#0f172a;--panel:#111827;--muted:#94a3b8;--text:#e5e7eb;--border:#1f2937;--accent:#22c55e;--warn:#ef4444;--ring:0 0 0 3px rgba(34,197,94,.25);font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial,sans-serif}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,#0b1020,#0b152a);color:var(--text)}
+    .wrap{max-width:1120px;margin:24px auto 80px;padding:0 16px}
+    @supports(padding:max(0px)){.wrap{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}}
+    .card{background:linear-gradient(180deg,var(--card),#0c152a);border:1px solid var(--border);box-shadow:0 10px 40px rgba(2,6,23,.45);border-radius:16px}
+    .login{max-width:520px;margin:56px auto;padding:22px}
+    h1{font-size:22px;margin:0 0 12px}
+    .muted{color:var(--muted);font-size:13px}
+    .row{display:grid;gap:6px;margin:10px 0}
+    input[type=email],input[type=password],select,input[type=text]{background:#0b1222;border:1px solid #233048;border-radius:12px;padding:11px 12px;color:var(--text);width:100%}
+    input:focus,select:focus{outline:none;box-shadow:var(--ring);border-color:#4ade80}
+    button{appearance:none;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
+    .btn{background:#22c55e;color:#06290f;box-shadow:0 6px 18px rgba(34,197,94,.35)}
+    .btn.secondary{background:#0b1222;color:var(--text);border:1px solid #1e293b}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:14px;border-bottom:1px solid var(--border);position:sticky;top:0;background:linear-gradient(180deg,var(--panel),#0c152a);border-radius:16px 16px 0 0}
+    .table{width:100%;border-collapse:separate;border-spacing:0;padding:0 14px 14px}
+    th,td{font-size:13px;border-bottom:1px solid #1e293b;padding:8px 10px;vertical-align:top}
+    th{position:sticky;top:56px;background:linear-gradient(180deg,var(--panel),#0c152a)}
+    .pill{display:inline-block;border:1px solid #334155;border-radius:999px;padding:2px 8px;font-size:12px}
+    .status{position:fixed;left:50%;transform:translateX(-50%);bottom:22px;padding:10px 14px;border-radius:12px;background:#0b1222;border:1px solid #233048;display:none}
+    .status.ok{border-color:#16a34a}
+    .status.err{border-color:#ef4444}
+    .header{display:flex;justify-content:space-between;align-items:center;padding:14px 14px 0}
+    .header h2{margin:0;font-size:18px}
+    .hint{font-size:12px;color:#9ca3af}
+    .split{display:grid;grid-template-columns:1fr;gap:14px}
+    .right{justify-self:end;display:flex;gap:10px;align-items:center}
+    @media(min-width:900px){.split{grid-template-columns:1fr auto}}
+  </style>
 </head>
 <body>
-    <div class="header">
-        <h1>"Каникулы - 2024"</h1>
-    </div>
-    <div class="calendar-container">
-        <div id='calendar'></div>
-    </div>
-    <div id="may-events" class="month-events">
-        <h3>Мероприятия на Май (даты неизвестны)</h3>
-        <ul>
-            <li>Турнир по шахматам «Награда шахматиста»</li>
-
-        </ul>
-    </div>
-    <div id="june-events" class="month-events">
-        <h3>Мероприятия на Июнь (даты неизвестны)</h3>
-        <ul>
-            <li>Турнир по шахматам «Награда шахматиста»</li>
-            <li>Арт-пространство «Территория кино» (в рамках проекта бесплатный показ фильма для всей семьи, Июнь (по отдельному графику), Фойе 1-й этаж Киноконцертный зал)</li>
-            <li>Региональное соревнование по боксу класса «Б» «РИНГ МУЖЕСТВА» памяти А. Патрушева, погибшего на Северном Кавказе в ходе боевых действий среди юниоров и юниорок (17-18 лет), юниоров и юниорок (19-22 лет), юноши и девушки (15-16 лет) (Июнь 2024, МАУ «ФОЦ «Сокол», МАУ ДО «СШ «Лидер») </li>
-            <li>Открытый турнир по футболу среди юношей 2013-2014 г.р., 2011-2012г.р., посвященный Дню победы в Великой Отечественной войне (Июнь 2024, МАУ ДО СШ ГО Красноуфимск)</li>
-            <li>Первенство по летнему многоборью ВФСК ГТО среди воспитанников ВПК. (Июнь 2024, МАУ «ФОЦ «Сокол», Центр тестирования)</li>
-            <li>Развлекательная игровая программа «Мир на планете – счастливы дети!», посвященный Дню защиты детей (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>Акция «Права и обязанности», приуроченная ко Дню защиты детей, профилактика преступлений и правонарушений, знакомство с нормативно-правовой системой (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>Программа ко дню защиты детей «Цветы жизни» (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>Спортивная игра ко дню пожарной охраны «Юные пожарные» 7+ (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>Туристическая полоса препятствий «Спортивный герой». (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>Фотоконкурс «Лето в кадре» (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>Стихотворный вечер ко дню рождения А.С. Пушкина «Я памятник себе воздвиг нерукотворный» (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>«Россия - Родина моя!» (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>Информ-досье «Не зная броду, не суйся в воду!», с привлечением Сычева Дмитрия Сергеевича, спасателя II класса ГКУ «Службы спасения Свердловской области». Профилактика несчастных случаев на береговой зоне и в воде. (14+) (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>Квилт - дискуссия  «Азбука добрых качеств» Просмотр видеороликов о нравственном воспитании, с последующим обсуждением.(12+) (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>«С водой не шути!» Профилактическое мероприятие перед открытием купального сезона с привлечением Сычева Дмитрия Сергеевича, спасателя II класса ГКУ «Службы спасения Свердловской области». (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>Мастер-класс ко Дню России «Наша крепкая страна!» 12+ (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>Творческая мастерская ко Дню России «Моя прекрасная Родина» (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>Мастер класс «Страна моя - Россия» Создание нагрудного знака триколор, ко дню России.(14+) (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>Муниципальный конкурс городского округа Красноуфимск-марафон для волонтеров Общероссийского общественно-государственного движения детей и молодежи «Движение первых» (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>Поездка команды лучших волонтеров городского округа Красноуфимск Общероссийского общественно-государственного движения детей и молодежи «Движение первых» (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>Фестиваль Красок «Холи-Фест-2024» - в рамках декады Дня защиты детей (Первая декада июня 2024, ЦТДиМ)</li>
-            <li>«Вместе мы – большая сила, вместе мы – страна Россия». Акция по микрорайону «Селекционная станция», приученному ко Дню России. (14+) (Вторая декада июня 2024, ЦТДиМ)</li>
-            <li>Творческое мероприятие. Декоративная картина 7+ (Вторая декада июня 2024, ЦТДиМ)</li>
-            <li>Велопробег «ВелоПуть» (14+) (Вторая декада июня 2024, ЦТДиМ)</li>
-            <li>Спринт-турнир «Крученый мяч». По настольному теннису среди воспитанников КМЖ. (14+) (Вторая декада июня 2024, ЦТДиМ)</li>
-            <li>Акция «Дети России – 2024» приученная ко Дню России. (14+) (Вторая декада июня 2024, ЦТДиМ)</li>
-            <li>Конкурс рисунков на асфальте «Краски лета» 6+ (Вторая декада июня 2024, ЦТДиМ)</li>
-            <li>Беседа «Стоп наркотикам!» по профилактики наркомании 14+ (Вторая декада июня 2024, ЦТДиМ)</li>
-
-            <li>Беседа-дискуссия «Изучение условных знаков, топографические и спортивные карты». (Третья  декада июня 2024, ЦТДиМ)</li>
-            <li>Квест ко Дню Поиска кладов и секретов «Тайна Перекрестка» (Третья  декада июня 2024, ЦТДиМ)</li>
-            <li>Муниципальный флешмоб «Мы против наркотиков!», приуроченный к Международному дню борьбы с наркоманией. (Третья  декада июня 2024, ЦТДиМ)</li>
-            <li>Праздничный концерт «МЕГА-fresh», посвященный дню молодежи Красноуфимска (Третья  декада июня 2024, ЦТДиМ)</li>
-
-            <li>Акция «Мы будущее России», торжественное вручение паспорта гражданина Российской Федерации, посвященное Дню России. (По согласованию июнь 2024, ЦТДиМ)</li>
-            <li>«Молодежный квартал»-«КСК-News!», комплекс мероприятий в рамках организации празднования Дня города, приуроченных к 289-летию Красноуфимска (По согласованию июнь 2024, ЦТДиМ)</li>
-            <li>XV юбилейный молодежный фестиваль «КАМЕННЫЙ ПОЯС – 2024 – Красноуфимск – город искусства, туризма и спорта» (По согласованию июнь 2024, ЦТДиМ)</li>
-            <li>Военно-спортивная патриотическая игра «Марафон героев» (По согласованию июнь 2024, ЦТДиМ)</li>
-            <li>Комплекс мероприятий в День памяти и скорби с участием структурных подразделений МАУ «ЦТДиМ» (По согласованию июнь 2024, ЦТДиМ)</li>
-            <li>Муниципальная акция «Объединимся против ВИЧ!» для жителей городского округа Красноуфимск (По согласованию июнь 2024, ЦТДиМ)</li>
-
-            <li>Конкурс рисунков «Край родной, навек любимый», мероприятие, приуроченное к 90-летию Свердловской области (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Экскурсия для воспитанников Центра на шоколадную фабрику г. Пермь.  (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Экскурсия для детей-инвалидов в Кунгурскую Ледяную пещеру. (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Социальная акция для населения г. Красноуфимска «Знать - значит жить!» - размещение информационных материалов по профилактике ВИЧ-инфекции в транспорте, остановках общественного транспорта, в торгово-развлекательных центрах и местах массового пребывания людей (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Пушкинквест «В тридевятом царстве, в тридесятом государстве» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Посиделки книголюбов «Мой книжный герой» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Час безопасности «Каникулы в радость!» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Патриотический праздник «Россия – любимая наша страна!» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Фестиваль чтения «Город читающих детей» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Конкурсно-игровая программа «Парк юрского периода» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Литературно-игровой час «Волшебная страна Лукоморье» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Развлекательная программа «День индейцев» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Развлекательная программа «Джунгли зовут» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Игровая программа «День сказочного героя» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Квизбук «Скоро сказка сказывается» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Акция «Читаем Пушкина вместе» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>День веселых затей «Детство - чудесная страна» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Краеведческая тропа «Вот она какая, сторона родная» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Библио-сафари «Приходите в Африку гулять» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Конкурсная программа «Клёвая рыбалка» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Литературная игра «Путешествие в мир книг» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-
-            <li>Игровая программа «Без билета вокруг света» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Акция «Безопасное лето» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Праздник «Маленькие дети на большой планете» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Квест «Загадки А. С. Пушкина» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Игровая  программа «Радуга друзей» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Познавательная игра «Светофор бежит на помощь» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Познавательная игра «Горжусь тобой, моя Россия» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Литературный праздник «В городе трех толстяков» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Литературный экспресс «День рождения Мэри Поппинс» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Игровое мероприятие «Радужные странствия» (к Международному дню защиты детей) (Июнь 2024, ГАУ «ЦСПСиД )</li>
-            <li>Квест «Россия: вчера, сегодня, завтра» (Июнь 2024, ГАУ «ЦСПСиД )</li>
-
-            <li>Концертно - игровая программа «Дружба – это наша сила! Секреты дружбы от кота Леопольда.» (Июнь по согласованию МАУДО "Дворец творчества")</li>
-            <li>Познавательно-игровая программа «Семья - как много в этом слове…» (Июнь по согласованию МАУДО "Дворец творчества")</li>
-            <li>ШОУ беспилотных, радиоуправляемых моделей «Скорость и мощность»(Июнь по согласованию МАУДО "Дворец творчества")</li>
-            <li>Мастер-классы: «Ярмарка мастеров» «Пейзажи Урала» рисование углем «Фэнтези-арт: создание магических и сказочных сюжетов с использованием фантастических элементов» «Театральный калейдоскоп» (изготовление театральных кукол) «История в твоей голове» (создание комикса, знакомство с раскадровкой в мультипликации) «Приручить дракона» конструирование из подручных материалов "Плетение тактических браслетов для участников специальной военной операции" (из материалов заказчиков) (Июнь по согласованию МАУДО "Дворец творчества")</li>
-
-
-
-        </ul>
-    </div>
-    <div id="july-events" class="month-events">
-        <h3>Мероприятия на Июль (даты неизвестны)</h3>
-        <ul>
-           <!-- <li>Мероприятие 5</li>
-            <li>Мероприятие 6</li>
-            <li>Мероприятие 7</li>
-            <li>Мероприятие 8</li>-->
-        </ul>
-        </ul>
-    </div>
-    <div id="august-events" class="month-events">
-        <h3>Мероприятия на Август (даты неизвестны)</h3>
-        <ul>
-            <!-- <li>Мероприятие 9</li>
-            <li>Мероприятие 10</li>
-            <li>Мероприятие 11</li>
-            <li>Мероприятие 12</li>-->
-        </ul>
-    </div>
-    <div class="footer">
-        <p>Начальник отдела по социальной политике, молодежным программам и туризму <p>Волкова Виктория Александровна</p></p>
-        <p>Телефон: +7 922 100-09-85</p>
-        <p>Телефон: (34394) 5-07-20 добавочный (207)</p>
+  <div class="wrap">
+    <div id="login" class="card login">
+      <h1>Вход для администраторов</h1>
+      <p class="muted">Войдите учёткой Supabase (email+password). Доступ выдаётся только доверенным адресам.</p>
+      <div class="row"><label>Email</label><input id="email" type="email" autocomplete="email" /></div>
+      <div class="row"><label>Пароль</label><input id="password" type="password" autocomplete="current-password" /></div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button id="btnLogin" class="btn">Войти</button>
+        <button id="btnLogoutHidden" class="btn secondary" style="display:none">Выйти</button>
+        <span class="muted">Нужен доступ? Добавьте пользователя в Supabase Auth и в политику RLS.</span>
+      </div>
     </div>
 
-    <div id="eventModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="modalTitle"></h2>
-            <p id="modalDate"></p>
-            <div id="modalEvents"></div>
+    <section id="app" class="card" style="display:none">
+      <div class="header">
+        <h2>Заявки</h2>
+        <div class="right">
+          <button id="btnExport" class="btn secondary">Экспорт CSV</button>
+          <button id="btnLogout" class="btn secondary">Выйти</button>
         </div>
-    </div>
+      </div>
+      <div class="toolbar">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <select id="filterDate">
+            <option value="">Все даты</option>
+            <option value="2025-11-19">19 ноября</option>
+            <option value="2025-11-20">20 ноября</option>
+            <option value="2025-11-21">21 ноября</option>
+          </select>
+          <select id="filterTime">
+            <option value="">Все часы</option>
+            <option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
+            <option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option>
+          </select>
+          <input id="search" type="text" placeholder="Поиск: организация, руководитель, команда…" />
+          <button id="btnRefresh" class="btn">Обновить</button>
+        </div>
+        <div class="hint">Показываются только записи, доступ к которым разрешён политиками RLS.</div>
+      </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        locale: 'ru',
-        validRange: {
-            start: '2024-05-01',
-            end: '2024-09-01'
-        },
-        headerToolbar: {
-            left: 'prev,next',
-            center: 'title',
-            right: ''
-        },
-        showNonCurrentDates: false,
-        events: events,
-        datesSet: function(info) {
-            updateCalendarTitle(info.view.title);
-            showMonthEvents(info.view.currentStart);
-            updateDayCellDates();
-        },
-        dateClick: function(info) {
-            showEventsForDate(info.dateStr);
-        },
-        eventClick: function(info) {
-            var clickedDate = info.jsEvent.target.closest('.fc-daygrid-day').getAttribute('data-date');
-            showEventsForDate(clickedDate);
-            info.jsEvent.preventDefault();
-        }
+      <div style="overflow:auto">
+        <table class="table" id="tbl">
+          <thead>
+            <tr>
+              <th>Дата</th>
+              <th>Время</th>
+              <th>Категория</th>
+              <th>Организация</th>
+              <th>Руководитель</th>
+              <th>Должность</th>
+              <th>Телефон</th>
+              <th>Email</th>
+              <th>Команда</th>
+              <th>Участник 1 (ДР)</th>
+              <th>Участник 2 (ДР)</th>
+              <th>Участник 3 (ДР)</th>
+              <th>Создано</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <div id="status" class="status"></div>
+
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script>
+    // === ВСТАВЬТЕ СВОИ ЗНАЧЕНИЯ ===
+const SUPABASE_URL = "https://wjoldaptaecqfworfkzk.supabase.co"; // твой Project URL
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indqb2xkYXB0YWVjcWZ3b3Jma3prIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIzNzQ0OTEsImV4cCI6MjA3Nzk1MDQ5MX0.-sQLLELT8xq_xYX1INTZE_Q2bzoxEOEoPwcSotIKryE";                // TODO (public anon)
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const elLogin = document.getElementById('login');
+    const elApp = document.getElementById('app');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const statusEl = document.getElementById('status');
+
+    function toast(msg, ok){
+      statusEl.textContent = msg; statusEl.className = 'status ' + (ok?'ok':'err'); statusEl.style.display = 'block';
+      clearTimeout(toast._t); toast._t = setTimeout(()=> statusEl.style.display = 'none', 3500);
+    }
+
+    function fmtDate(d){ if(!d) return ''; const x = new Date(d); return x.toLocaleDateString('ru-RU'); }
+    function fmtTime(t){ return (t||'').slice(0,5); }
+
+    async function signIn(){
+      const { error } = await supabase.auth.signInWithPassword({ email: email.value.trim(), password: password.value });
+      if (error) { toast('Ошибка входа: '+(error.message||'проверьте доступ'), false); return; }
+      email.value=''; password.value='';
+      await load();
+      elLogin.style.display='none'; elApp.style.display='block';
+    }
+
+    async function signOut(){ await supabase.auth.signOut(); elApp.style.display='none'; elLogin.style.display='block'; }
+
+    async function load(){
+      const d = document.getElementById('filterDate').value;
+      const t = document.getElementById('filterTime').value;
+      const q = document.getElementById('search').value.trim().toLowerCase();
+
+      let query = supabase
+        .from('bookings')
+        .select('created_at,event_date,event_time,age_category,org,leader_name,position,phone,email,team_name,member1_name,member1_birth,member2_name,member2_birth,member3_name,member3_birth')
+        .order('event_date')
+        .order('event_time');
+      if (d) query = query.eq('event_date', d);
+      if (t) query = query.eq('event_time', t);
+
+      const { data, error } = await query;
+      if (error) { toast('Нет доступа или ошибка загрузки', false); console.error(error); return; }
+
+      // client-side search
+      const rows = (data||[]).filter(r => {
+        const hay = (r.org + ' ' + r.leader_name + ' ' + r.team_name).toLowerCase();
+        return !q || hay.includes(q);
+      });
+
+      const tb = document.querySelector('#tbl tbody');
+      tb.innerHTML = '';
+      for (const r of rows){
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${fmtDate(r.event_date)}</td>
+          <td><span class="pill">${fmtTime(r.event_time)}</span></td>
+          <td>${r.age_category}</td>
+          <td>${r.org}</td>
+          <td>${r.leader_name}</td>
+          <td>${r.position}</td>
+          <td>${r.phone}</td>
+          <td>${r.email}</td>
+          <td>${r.team_name}</td>
+          <td>${r.member1_name} (${fmtDate(r.member1_birth)})</td>
+          <td>${r.member2_name} (${fmtDate(r.member2_birth)})</td>
+          <td>${r.member3_name} (${fmtDate(r.member3_birth)})</td>
+          <td>${new Date(r.created_at).toLocaleString('ru-RU')}</td>
+        `;
+        tb.appendChild(tr);
+      }
+      toast(`Загружено: ${rows.length}`, true);
+    }
+
+    function toCSV(rows){
+      if(!rows || !rows.length) return '';
+      const head = Object.keys(rows[0]);
+      const esc = v => ('"'+String(v??'').replaceAll('"','""')+'"');
+      const lines = [head.map(esc).join(',')];
+      for (const r of rows){ lines.push(head.map(k=>esc(r[k])).join(',')); }
+      return lines.join('\n');
+    }
+
+    async function exportCSV(){
+      let query = supabase
+        .from('bookings')
+        .select('created_at,event_date,event_time,age_category,org,leader_name,position,phone,email,team_name,member1_name,member1_birth,member2_name,member2_birth,member3_name,member3_birth')
+        .order('event_date')
+        .order('event_time');
+      const d = document.getElementById('filterDate').value; if (d) query = query.eq('event_date', d);
+      const t = document.getElementById('filterTime').value; if (t) query = query.eq('event_time', t);
+      const { data, error } = await query;
+      if (error) { toast('Экспорт недоступен', false); return; }
+      const csv = toCSV(data||[]);
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      const dt = new Date().toISOString().slice(0,10);
+      a.download = `bookings_${dt}.csv`; a.click(); URL.revokeObjectURL(a.href);
+    }
+
+    // Auth state restore
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) { elLogin.style.display='none'; elApp.style.display='block'; load(); }
     });
-    calendar.render();
 
-    function updateCalendarTitle(title) {
-        var calendarTitle = document.querySelector('.fc-toolbar-title');
-        if (calendarTitle) {
-            // Оставляем только название месяца, удаляя год
-            var monthTitle = title.split(' ')[0];
-            // Форматируем месяц с заглавной буквы
-            var capitalizedMonthTitle = monthTitle.charAt(0).toUpperCase() + monthTitle.slice(1).toLowerCase();
-            calendarTitle.innerText = capitalizedMonthTitle;
-        }
-    }
+    document.getElementById('btnLogin').addEventListener('click', signIn);
+    document.getElementById('btnLogout').addEventListener('click', signOut);
+    document.getElementById('btnRefresh').addEventListener('click', load);
+    document.getElementById('btnExport').addEventListener('click', exportCSV);
 
-    function showMonthEvents(date) {
-        var month = date.getMonth();
-        var mayEvents = document.getElementById('may-events');
-        var juneEvents = document.getElementById('june-events');
-        var julyEvents = document.getElementById('july-events');
-        var augustEvents = document.getElementById('august-events');
-
-        mayEvents.classList.remove('active');
-        juneEvents.classList.remove('active');
-        julyEvents.classList.remove('active');
-        augustEvents.classList.remove('active');
-
-        if (month == 4) {
-            mayEvents.classList.add('active');
-        } else if (month == 5) {
-            juneEvents.classList.add('active');
-        } else if (month == 6) {
-            julyEvents.classList.add('active');
-        } else if (month == 7) {
-            augustEvents.classList.add('active');
-        }
-    }
-
-    function showEventsForDate(dateStr) {
-        var modal = document.getElementById("eventModal");
-        var modalTitle = document.getElementById("modalTitle");
-        var modalDate = document.getElementById("modalDate");
-        var modalEvents = document.getElementById("modalEvents");
-
-        var date = new Date(dateStr);
-        var options = { day: 'numeric', month: 'long' };
-        var formattedDate = date.toLocaleDateString('ru-RU', options);
-
-        // Форматируем месяц с заглавной буквы
-        var capitalizedFormattedDate = formattedDate.replace(/(^|\s)\S/g, function(letter) {
-            return letter.toUpperCase();
-        });
-
-        modalTitle.innerText = 'Мероприятия на ' + capitalizedFormattedDate;
-
-        var eventsOnDate = getEventsForDate(dateStr);
-        var eventTitles = eventsOnDate.map(event => `<p>${event.title}</p>`);
-
-        if (eventTitles.length === 0) {
-            eventTitles = ['Нет мероприятий на этот день'];
-        }
-
-        modalEvents.innerHTML = eventTitles.join('');
-
-        modal.style.display = "block";
-    }
-
-    function getEventsForDate(dateStr) {
-        var events = calendar.getEvents();
-        var date = new Date(dateStr);
-
-        var eventsOnDate = [];
-
-        events.forEach(event => {
-            var start = new Date(event.startStr);
-            var end = event.endStr ? new Date(event.endStr) : new Date(event.startStr);
-
-            if (date >= start && date <= end) {
-                eventsOnDate.push(event);
-            }
-        });
-
-        return eventsOnDate;
-    }
-
-    function updateDayCellDates() {
-        var dayCells = document.querySelectorAll('.fc-daygrid-day');
-        dayCells.forEach(function(cell) {
-            var dateStr = cell.getAttribute('data-date');
-            if (dateStr) {
-                var date = new Date(dateStr);
-                var options = { day: 'numeric', month: 'long' };
-                var formattedDate = date.toLocaleDateString('ru-RU', options);
-
-                // Форматируем месяц с заглавной буквы
-                var capitalizedFormattedDate = formattedDate.replace(/(^|\s)\S/g, function(letter) {
-                    return letter.toUpperCase();
-                });
-
-                var dayNumberEl = cell.querySelector('.fc-daygrid-day-number');
-                if (dayNumberEl) {
-                    dayNumberEl.innerText = capitalizedFormattedDate;
-                }
-            }
-        });
-    }
-
-    var modal = document.getElementById("eventModal");
-    var span = document.getElementsByClassName("close")[0];
-
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-});
-
-
-</script>
-
-    </script>
+    document.getElementById('filterDate').addEventListener('change', load);
+    document.getElementById('filterTime').addEventListener('change', load);
+    document.getElementById('search').addEventListener('input', ()=>{ clearTimeout(window._t); window._t=setTimeout(load,250); });
+  </script>
 </body>
 </html>
