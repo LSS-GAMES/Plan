@@ -3,171 +3,116 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Регистрация — бронирование слотов</title>
+  <title>Админка — заявки</title>
   <style>
-    :root {
-      --bg: #f6f7f9; --card:#fff; --txt:#0f172a; --muted:#6b7280; --border:#e5e7eb;
-      --accent:#2563eb; --accent-contrast:#fff; --ring: 0 0 0 3px rgba(37,99,235,.25);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+    :root{
+      --bg:#f6f7f9; --card:#ffffff; --panel:#ffffff; --muted:#6b7280; --text:#0f172a; --border:#e5e7eb;
+      --accent:#2563eb; --accent-contrast:#ffffff; --ring:0 0 0 3px rgba(37,99,235,.25);
+      font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial,sans-serif;
     }
-    html,body{height:100%;}
-    body { margin: 0; background: var(--bg); color: var(--txt); -webkit-text-size-adjust:100%; }
-    .wrap { max-width: 960px; margin: 24px auto 80px; padding: 0 16px; }
-    @supports(padding: max(0px)) { .wrap{ padding-left:max(16px, env(safe-area-inset-left)); padding-right:max(16px, env(safe-area-inset-right)); } }
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--text)}
+    .wrap{max-width:1120px;margin:24px auto 80px;padding:0 16px}
+    @supports(padding:max(0px)){.wrap{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}}
 
-    h1 { font-size: 24px; margin: 8px 0 16px; letter-spacing:.2px; }
-    .card { background: var(--card); border-radius: 14px; box-shadow: 0 6px 24px rgba(15,23,42,.06); padding: 20px; }
-    fieldset { border: none; padding: 0; margin: 0 0 18px; }
-    legend { font-weight: 700; margin: 0 0 10px; }
+    .card{background:var(--card);border:1px solid var(--border);box-shadow:0 6px 24px rgba(15,23,42,.06);border-radius:16px}
+    .login{max-width:520px;margin:56px auto;padding:22px}
+    h1{font-size:22px;margin:0 0 12px}
+    .muted{color:var(--muted);font-size:13px}
+    .row{display:grid;gap:6px;margin:10px 0}
+    input[type=email],input[type=password],select,input[type=text]{background:#fff;border:1px solid var(--border);border-radius:12px;padding:11px 12px;color:var(--text);width:100%}
+    input:focus,select:focus{outline:none;box-shadow:var(--ring);border-color:#93c5fd}
+    button{appearance:none;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
+    .btn{background:var(--accent);color:var(--accent-contrast);box-shadow:0 6px 18px rgba(37,99,235,.25)}
+    .btn.secondary{background:#fff;color:var(--text);border:1px solid var(--border);box-shadow:none}
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 12px 16px; }
-    .row { display: grid; gap: 8px; }
-    .row label { font-size: 13px; color: #374151; }
+    .header{display:flex;justify-content:space-between;align-items:center;padding:14px 14px 0}
+    .header h2{margin:0;font-size:18px}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:14px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--panel);border-radius:16px 16px 0 0;z-index:5}
+    .hint{font-size:12px;color:var(--muted)}
 
-    input[type="text"], input[type="tel"], input[type="email"], input[type="date"] {
-      width: 100%; box-sizing: border-box; padding: 12px 14px; border: 1px solid #d1d5db; border-radius: 12px; background: #fff; font-size: 15px;
-    }
-    input:focus{ outline: none; box-shadow: var(--ring); border-color: #93c5fd; }
+    .table-wrap{overflow:auto; -webkit-overflow-scrolling:touch; max-height:70vh; border-top:1px solid var(--border)}
+    table{width:100%;border-collapse:separate;border-spacing:0}
+    thead th{position:sticky;top:0;background:var(--panel);z-index:2;border-bottom:1px solid var(--border)}
+    th,td{font-size:13px;padding:10px 12px;vertical-align:top;border-bottom:1px solid var(--border)}
+    .pill{display:inline-block;border:1px solid var(--border);border-radius:999px;padding:2px 8px;font-size:12px}
 
-    /* Чипы для дат/времени */
-    .chips { display:grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
-    label.option { display: inline-flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 999px; background: #fafafa; cursor: pointer; user-select: none; transition: background .15s, border-color .15s, transform .02s; }
-    label.option:active{ transform:scale(.98); }
-    label.option input { appearance: none; width:16px; height:16px; border-radius:50%; border:1.5px solid #9ca3af; display:inline-block; position:relative; }
-    label.option input:checked{ border-color: var(--accent); box-shadow: inset 0 0 0 4px var(--accent); }
-    label.option span{ font-weight:600; }
-    label.option.disabled { opacity: .45; filter: grayscale(100%); cursor: not-allowed; }
+    .status{position:fixed;left:50%;transform:translateX(-50%);bottom:22px;padding:10px 14px;border-radius:12px;background:#111827;color:#fff;border:1px solid rgba(0,0,0,.08);display:none;box-shadow:0 10px 30px rgba(0,0,0,.15)}
+    .status.ok{background:#065f46}
+    .status.err{background:#b91c1c}
 
-    .muted { color: var(--muted); font-size: 13px; margin-top:6px; }
-
-    /* Команда: по два поля в ряд на десктопе, в столбик на мобиле */
-    .members-grid { display:grid; grid-template-columns: 1fr 220px; gap:12px 16px; align-items:end; }
-    .member-row { display: contents; }
-    .member-badge { font-weight:700; font-size:12px; color:#111827; background:#e5e7eb; border-radius:999px; padding:4px 8px; align-self:center; }
-    .member-name, .member-birth { display:grid; gap:6px; }
-
-    @media (max-width: 700px){
-      .members-grid{ grid-template-columns: 1fr; }
-      .member-badge{ display:none; }
-      .grid{ grid-template-columns: 1fr; }
-      .chips{ grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); }
-    }
-
-    .actions { display:flex; gap:12px; align-items:center; margin-top: 14px; flex-wrap:wrap; }
-    button { appearance: none; border: none; border-radius: 12px; padding: 12px 16px; font-weight: 700; background: var(--accent); color: var(--accent-contrast); cursor: pointer; box-shadow: 0 4px 14px rgba(37,99,235,.25); }
-    button[disabled] { opacity:.65; cursor: not-allowed; }
-    button[data-loading="1"]{ position:relative; }
-    button[data-loading="1"]::after{ content:""; width:16px; height:16px; border-radius:50%; border:2px solid rgba(255,255,255,.6); border-top-color:transparent; display:inline-block; margin-left:8px; vertical-align: -3px; animation:spin .9s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg);} }
-
-    .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 24px; background: #111827; color: #fff; padding: 10px 14px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.2); display:none; z-index:9999; }
-    .error { background: #b91c1c; }
-    .ok { background: #065f46; }
-    .req { color:#ef4444; margin-left:4px; }
+    .right{justify-self:end;display:flex;gap:10px;align-items:center}
+    @media(min-width:900px){.split{grid-template-columns:1fr auto}}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>Регистрация на мероприятие</h1>
-    <div class="card">
-      <form id="booking-form" novalidate>
-        <!-- 1. Дата участия -->
-        <fieldset>
-          <legend>1. Дата участия <span class="req">*</span></legend>
-          <div id="dateGroup" class="chips">
-            <label class="option"><input type="radio" name="event_date" value="2025-11-19" required><span>19 ноября</span></label>
-            <label class="option"><input type="radio" name="event_date" value="2025-11-20"><span>20 ноября</span></label>
-            <label class="option"><input type="radio" name="event_date" value="2025-11-21"><span>21 ноября</span></label>
-          </div>
-          <div class="muted">Выберите только одну дату.</div>
-        </fieldset>
-
-        <!-- 2. Время проведения -->
-        <fieldset>
-          <legend>2. Время проведения <span class="req">*</span></legend>
-          <div id="timeGroup" class="chips">
-            <label class="option"><input type="radio" name="event_time" value="09:00" required><span>09:00</span></label>
-            <label class="option"><input type="radio" name="event_time" value="10:00"><span>10:00</span></label>
-            <label class="option"><input type="radio" name="event_time" value="11:00"><span>11:00</span></label>
-            <label class="option"><input type="radio" name="event_time" value="12:00"><span>12:00</span></label>
-            <label class="option"><input type="radio" name="event_time" value="13:00"><span>13:00</span></label>
-            <label class="option"><input type="radio" name="event_time" value="14:00"><span>14:00</span></label>
-            <label class="option"><input type="radio" name="event_time" value="15:00"><span>15:00</span></label>
-            <label class="option"><input type="radio" name="event_time" value="16:00"><span>16:00</span></label>
-            <label class="option"><input type="radio" name="event_time" value="17:00"><span>17:00</span></label>
-          </div>
-          <div class="muted">Слоты, занятые другими участниками, будут недоступны (серым).</div>
-        </fieldset>
-
-        <!-- 3. Возрастная категория -->
-        <fieldset>
-          <legend>3. Возрастная категория <span class="req">*</span></legend>
-          <div class="chips" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
-            <label class="option"><input type="radio" name="age_category" value="10-12" required><span>Младшая (10–12)</span></label>
-            <label class="option"><input type="radio" name="age_category" value="13-15"><span>Средняя (13–15)</span></label>
-            <label class="option"><input type="radio" name="age_category" value="16-18"><span>Старшая (16–18)</span></label>
-          </div>
-        </fieldset>
-
-        <!-- 4–9. Контакты -->
-        <div class="grid">
-          <div class="row">
-            <label>4. Образовательная организация <span class="req">*</span></label>
-            <input type="text" name="org" autocomplete="organization" required />
-          </div>
-          <div class="row">
-            <label>5. ФИО руководителя <span class="req">*</span></label>
-            <input type="text" name="leader_name" autocomplete="name" required />
-          </div>
-          <div class="row">
-            <label>6. Должность <span class="req">*</span></label>
-            <input type="text" name="position" autocomplete="organization-title" required />
-          </div>
-          <div class="row">
-            <label>7. Контактный номер телефона <span class="req">*</span></label>
-            <input type="tel" name="phone" inputmode="tel" autocomplete="tel" placeholder="+7 900 000-00-00" required />
-          </div>
-          <div class="row">
-            <label>8. Адрес электронной почты <span class="req">*</span></label>
-            <input type="email" name="email" autocomplete="email" placeholder="name@example.com" required />
-          </div>
-          <div class="row">
-            <label>9. Название команды <span class="req">*</span></label>
-            <input type="text" name="team_name" required />
-          </div>
-        </div>
-
-        <!-- 10–15. Состав команды -->
-        <fieldset>
-          <legend>10–15. Состав команды <span class="req">*</span></legend>
-          <div class="members-grid">
-            <div class="member-row">
-              <div class="member-name"><label>10. ФИО участника 1</label><input type="text" name="member1_name" required /></div>
-              <div class="member-birth"><label>11. Дата рождения участника 1</label><input type="date" name="member1_birth" required /></div>
-            </div>
-            <div class="member-row">
-              <div class="member-name"><label>12. ФИО участника 2</label><input type="text" name="member2_name" required /></div>
-              <div class="member-birth"><label>13. Дата рождения участника 2</label><input type="date" name="member2_birth" required /></div>
-            </div>
-            <div class="member-row">
-              <div class="member-name"><label>14. ФИО участника 3</label><input type="text" name="member3_name" required /></div>
-              <div class="member-birth"><label>15. Дата рождения участника 3</label><input type="date" name="member3_birth" required /></div>
-            </div>
-          </div>
-          <div class="muted">На телефонах поля идут столбиком, на десктопе — по два в ряд (ФИО + дата).</div>
-        </fieldset>
-
-        <div class="actions">
-          <button id="submitBtn" type="submit">Отправить заявку</button>
-          <span id="hint" class="muted">Все поля обязательны. При гонке за слот система сообщит, если время уже занято.</span>
-        </div>
-      </form>
+    <div id="login" class="card login">
+      <h1>Вход для администраторов</h1>
+      <p class="muted">Войдите учёткой Supabase (email+password). Доступ выдаётся только доверенным адресам.</p>
+      <div class="row"><label>Email</label><input id="email" type="email" autocomplete="email" /></div>
+      <div class="row"><label>Пароль</label><input id="password" type="password" autocomplete="current-password" /></div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button id="btnLogin" class="btn">Войти</button>
+        <button id="btnLogoutHidden" class="btn secondary" style="display:none">Выйти</button>
+        <span class="muted">Нужен доступ? Добавьте пользователя в Supabase Auth и в политику RLS.</span>
+      </div>
     </div>
+
+    <section id="app" class="card" style="display:none">
+      <div class="header">
+        <h2>Заявки</h2>
+        <div class="right">
+          <button id="btnExport" class="btn secondary">Экспорт CSV</button>
+          <button id="btnLogout" class="btn secondary">Выйти</button>
+        </div>
+      </div>
+      <div class="toolbar">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <select id="filterDate">
+            <option value="">Все даты</option>
+            <option value="2025-11-19">19 ноября</option>
+            <option value="2025-11-20">20 ноября</option>
+            <option value="2025-11-21">21 ноября</option>
+          </select>
+          <select id="filterTime">
+            <option value="">Все часы</option>
+            <option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
+            <option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option>
+          </select>
+          <input id="search" type="text" placeholder="Поиск: организация, руководитель, команда…" />
+          <button id="btnRefresh" class="btn">Обновить</button>
+        </div>
+        <div class="hint">Показываются только записи, доступ к которым разрешён политиками RLS.</div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="tbl">
+          <thead>
+            <tr>
+              <th>Дата</th>
+              <th>Время</th>
+              <th>Категория</th>
+              <th>Организация</th>
+              <th>Руководитель</th>
+              <th>Должность</th>
+              <th>Телефон</th>
+              <th>Email</th>
+              <th>Команда</th>
+              <th>Участник 1 (ДР)</th>
+              <th>Участник 2 (ДР)</th>
+              <th>Участник 3 (ДР)</th>
+              <th>Создано</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
   </div>
 
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="status" class="status" role="status" aria-live="polite"></div>
 
-  <!-- Supabase JS (браузер) -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script>
     // === ВСТАВЬТЕ СВОИ ЗНАЧЕНИЯ ===
@@ -176,109 +121,115 @@ const SUPABASE_URL = "https://wjoldaptaecqfworfkzk.supabase.co"; // твой Pro
 
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const TIMES = ['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00'];
+    const elLogin = document.getElementById('login');
+    const elApp = document.getElementById('app');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const statusEl = document.getElementById('status');
 
-    const form = document.getElementById('booking-form');
-    const submitBtn = document.getElementById('submitBtn');
-    const toast = document.getElementById('toast');
-
-    function showToast(msg, ok=false) {
-      toast.textContent = msg;
-      toast.className = 'toast ' + (ok ? 'ok' : 'error');
-      toast.style.display = 'block';
-      clearTimeout(showToast._t);
-      showToast._t = setTimeout(()=> toast.style.display = 'none', 3500);
+    function toast(msg, ok){
+      statusEl.textContent = msg; statusEl.className = 'status ' + (ok?'ok':'err'); statusEl.style.display = 'block';
+      clearTimeout(toast._t); toast._t = setTimeout(()=> statusEl.style.display = 'none', 3500);
     }
 
-    function getSelectedDate() {
-      const el = document.querySelector('input[name="event_date"]:checked');
-      return el ? el.value : null;
+    function fmtDate(d){ if(!d) return ''; const x = new Date(d); return x.toLocaleDateString('ru-RU'); }
+    function fmtTime(t){ return (t||'').slice(0,5); }
+
+    async function signIn(){
+      const { error } = await supabase.auth.signInWithPassword({ email: email.value.trim(), password: password.value });
+      if (error) { toast('Ошибка входа: '+(error.message||'проверьте доступ'), false); return; }
+      email.value=''; password.value='';
+      await load();
+      elLogin.style.display='none'; elApp.style.display='block';
     }
 
-    function setTimeDisabled(time, disabled) {
-      const input = document.querySelector(`input[name="event_time"][value="${time}"]`);
-      if (!input) return;
-      input.disabled = !!disabled;
-      const lbl = input.closest('label.option');
-      if (lbl) lbl.classList.toggle('disabled', !!disabled);
-      if (disabled && input.checked) input.checked = false;
-    }
+    async function signOut(){ await supabase.auth.signOut(); elApp.style.display='none'; elLogin.style.display='block'; }
 
-    async function refreshDisabledTimes() {
-      const date = getSelectedDate();
-      if (!date) return;
-      TIMES.forEach(t => setTimeDisabled(t, false));
-      const { data, error } = await supabase
-        .from('booked_slots')
-        .select('event_time')
-        .eq('event_date', date);
-      if (error) { console.error(error); return; }
-      const booked = new Set((data || []).map(r => (r.event_time || '').slice(0,5)));
-      TIMES.forEach(t => { if (booked.has(t)) setTimeDisabled(t, true); });
-    }
+    async function load(){
+      const d = document.getElementById('filterDate').value;
+      const t = document.getElementById('filterTime').value;
+      const q = document.getElementById('search').value.trim().toLowerCase();
 
-    document.getElementById('dateGroup').addEventListener('change', refreshDisabledTimes, { passive:true });
+      let query = supabase
+        .from('bookings')
+        .select('created_at,event_date,event_time,age_category,org,leader_name,position,phone,email,team_name,member1_name,member1_birth,member2_name,member2_birth,member3_name,member3_birth')
+        .order('event_date')
+        .order('event_time');
+      if (d) query = query.eq('event_date', d);
+      if (t) query = query.eq('event_time', t);
 
-    // Выбираем первую дату по умолчанию (если ничего не выбрано)
-    (function initDefaultDate(){
-      const first = document.querySelector('input[name="event_date"]');
-      if (first && !document.querySelector('input[name="event_date"]:checked')) { first.checked = true; }
-      refreshDisabledTimes();
-    })();
+      const { data, error } = await query;
+      if (error) { toast('Нет доступа или ошибка загрузки', false); console.error(error); return; }
 
-    // Отправка формы с защитой от гонки: уникальный (event_date,event_time) на БД
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!form.reportValidity()) return; // нативная подсветка браузера
-      submitBtn.disabled = true; submitBtn.dataset.loading = '1';
+      const rows = (data||[]).filter(r => {
+        const hay = (r.org + ' ' + r.leader_name + ' ' + r.team_name).toLowerCase();
+        return !q || hay.includes(q);
+      });
 
-      const fd = new FormData(form);
-      const payload = {
-        event_date: fd.get('event_date'),
-        event_time: fd.get('event_time'),
-        age_category: fd.get('age_category'),
-        org: fd.get('org')?.trim(),
-        leader_name: fd.get('leader_name')?.trim(),
-        position: fd.get('position')?.trim(),
-        phone: fd.get('phone')?.trim(),
-        email: fd.get('email')?.trim(),
-        team_name: fd.get('team_name')?.trim(),
-        member1_name: fd.get('member1_name')?.trim(),
-        member1_birth: fd.get('member1_birth'),
-        member2_name: fd.get('member2_name')?.trim(),
-        member2_birth: fd.get('member2_birth'),
-        member3_name: fd.get('member3_name')?.trim(),
-        member3_birth: fd.get('member3_birth'),
-      };
-
-      // Health-check: быстрый пинг (на Free проект может быть в paused)
-      const { error: pingErr } = await supabase
-        .from('booked_slots')
-        .select('event_time', { count: 'exact', head: true });
-      if (pingErr) {
-        showToast('Сервис временно недоступен. Повторите попытку позже.', false);
-        submitBtn.disabled = false; submitBtn.dataset.loading = '0';
-        return;
+      const tb = document.querySelector('#tbl tbody');
+      tb.innerHTML = '';
+      for (const r of rows){
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${fmtDate(r.event_date)}</td>
+          <td><span class="pill">${fmtTime(r.event_time)}</span></td>
+          <td>${r.age_category}</td>
+          <td>${r.org}</td>
+          <td>${r.leader_name}</td>
+          <td>${r.position}</td>
+          <td>${r.phone}</td>
+          <td>${r.email}</td>
+          <td>${r.team_name}</td>
+          <td>${r.member1_name} (${fmtDate(r.member1_birth)})</td>
+          <td>${r.member2_name} (${fmtDate(r.member2_birth)})</td>
+          <td>${r.member3_name} (${fmtDate(r.member3_birth)})</td>
+          <td>${new Date(r.created_at).toLocaleString('ru-RU')}</td>
+        `;
+        tb.appendChild(tr);
       }
+      toast(`Загружено: ${rows.length}`, true);
+    }
 
-      const { error } = await supabase.from('bookings').insert(payload);
-      if (error) {
-        if (error.code === '23505') {
-          showToast('Этот слот уже занят. Выберите другое время.', false);
-          await refreshDisabledTimes();
-        } else {
-          console.error(error);
-          showToast('Ошибка отправки: ' + (error.message || 'попробуйте позже.'), false);
-        }
-        submitBtn.disabled = false; submitBtn.dataset.loading = '0';
-        return;
-      }
+    function toCSV(rows){
+      if(!rows || !rows.length) return '';
+      const head = Object.keys(rows[0]);
+      const esc = v => ('"'+String(v??'').replaceAll('"','""')+'"');
+      const lines = [head.map(esc).join(',')];
+      for (const r of rows){ lines.push(head.map(k=>esc(r[k])).join(',')); }
+      return lines.join('
+');
+    }
 
-      showToast('Заявка принята! Мы свяжемся с вами по e‑mail.', true);
-      form.reset();
-      refreshDisabledTimes();
-      submitBtn.disabled = false; submitBtn.dataset.loading = '0';
+    async function exportCSV(){
+      let query = supabase
+        .from('bookings')
+        .select('created_at,event_date,event_time,age_category,org,leader_name,position,phone,email,team_name,member1_name,member1_birth,member2_name,member2_birth,member3_name,member3_birth')
+        .order('event_date')
+        .order('event_time');
+      const d = document.getElementById('filterDate').value; if (d) query = query.eq('event_date', d);
+      const t = document.getElementById('filterTime').value; if (t) query = query.eq('event_time', t);
+      const { data, error } = await query;
+      if (error) { toast('Экспорт недоступен', false); return; }
+      const csv = toCSV(data||[]);
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      const dt = new Date().toISOString().slice(0,10);
+      a.download = `bookings_${dt}.csv`; a.click(); URL.revokeObjectURL(a.href);
+    }
+
+    // Auth state restore
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) { elLogin.style.display='none'; elApp.style.display='block'; load(); }
     });
+
+    document.getElementById('btnLogin').addEventListener('click', signIn);
+    document.getElementById('btnLogout').addEventListener('click', signOut);
+    document.getElementById('btnRefresh').addEventListener('click', load);
+    document.getElementById('btnExport').addEventListener('click', exportCSV);
+
+    document.getElementById('filterDate').addEventListener('change', load);
+    document.getElementById('filterTime').addEventListener('change', load);
+    document.getElementById('search').addEventListener('input', ()=>{ clearTimeout(window._t); window._t=setTimeout(load,250); });
   </script>
 </body>
 </html>
